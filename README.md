@@ -8,19 +8,6 @@
 [![License](https://img.shields.io/packagist/l/snowmannunu/mask-cn.svg)](LICENSE)
 [![PHP Version](https://img.shields.io/packagist/php-v/snowmannunu/mask-cn.svg)](composer.json)
 
-## 为什么不用 fuko-php/masked / pachico/magoo?
-
-通用脱敏库**不内置任何中国本土数据规则**,要让它脱敏中国身份证、复姓姓名、中国车牌,你都得自己写正则。
-
-| 场景 | 通用脱敏库 | mask-cn |
-|---|---|---|
-| 中国身份证 18 位识别 + 校验 | 自己写正则 | ✅ 内置 |
-| 中国手机号 1xx 格式 | 通用正则 | ✅ 内置 |
-| **中文姓名复姓识别** | ❌ 不支持 | ✅ 内置 80+ 复姓字典 |
-| 国内银行卡号 16/19 位 | 自己写 | ✅ 内置 |
-| 中国车牌(京A·12345) | ❌ 不支持 | ✅ 内置 |
-| Laravel ServiceProvider/Facade | 部分 | ✅ 一键集成 |
-
 ## 安装
 
 ```bash
