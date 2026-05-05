@@ -65,11 +65,16 @@ class Mask
     /**
      * 长文本智能脱敏 (auto 模式)
      *
-     * @param string[] $types 限制识别类型,空表示识别所有
+     * 支持纯文本和 JSON 字符串:
+     * - 纯文本: 自动识别身份证、手机号、邮箱、银行卡并脱敏
+     * - JSON: 递归遍历所有字符串值进行识别脱敏
+     *
+     * @param array<string,mixed> $options ["char" => "*", "types" => []]
+     * @return string 脱敏后的文本或 JSON 字符串
      */
-    public static function auto(string $text, array $types = []): string
+    public static function auto(string $text, array $options = []): string
     {
-        return (new Auto())->mask($text, $types);
+        return (new Auto())->mask($text, $options);
     }
 
     public static function reset(): void
