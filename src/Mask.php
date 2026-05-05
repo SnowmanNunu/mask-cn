@@ -13,6 +13,11 @@ namespace MaskCn;
  * @method static string name(string $name, array $options = [])
  * @method static string email(string $email, array $options = [])
  * @method static string plate(string $plate, array $options = [])
+ * @method static string uscc(string $uscc, array $options = [])
+ * @method static string hkMoPass(string $hkMoPass, array $options = [])
+ * @method static string taiwanId(string $taiwanId, array $options = [])
+ * @method static string passport(string $passport, array $options = [])
+ * @method static string address(string $address, array $options = [])
  */
 class Mask
 {
@@ -49,7 +54,7 @@ class Mask
      * 批量脱敏数组
      *
      * @param array<string,mixed> $data
-     * @param array<string,string> $rules e.g. ['phone' => 'phone', 'id' => 'idCard']
+     * @param array<string,string> $rules e.g. ["phone" => "phone", "id" => "idCard"]
      * @return array<string,mixed>
      */
     public static function array(array $data, array $rules = []): array

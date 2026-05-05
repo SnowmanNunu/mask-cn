@@ -14,6 +14,11 @@ use MaskCn\Masker;
  * @method static string name(string $name, array $options = [])
  * @method static string email(string $email, array $options = [])
  * @method static string plate(string $plate, array $options = [])
+ * @method static string uscc(string $uscc, array $options = [])
+ * @method static string hkMoPass(string $hkMoPass, array $options = [])
+ * @method static string taiwanId(string $taiwanId, array $options = [])
+ * @method static string passport(string $passport, array $options = [])
+ * @method static string address(string $address, array $options = [])
  * @method static array  maskArray(array $data, array $rules = [])
  *
  * @see \MaskCn\Masker
