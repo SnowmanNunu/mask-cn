@@ -1,0 +1,54 @@
+{
+    "name": "snowmannunu/mask-cn",
+    "description": "中文本土场景敏感数据脱敏库 - 内置中国手机号/身份证/银行卡/复姓姓名/车牌等规则,开箱即用,Laravel 友好",
+    "keywords": ["mask", "脱敏", "data-masking", "china", "中文", "身份证", "手机号", "laravel"],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/SnowmanNunu/mask-cn",
+    "authors": [
+        {
+            "name": "Snowman",
+            "email": "SnowmanNunu@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5 || ^10.0",
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "orchestra/testbench": "^6.0 || ^7.0 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MaskCn\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MaskCn\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MaskCn\\Laravel\\MaskCnServiceProvider"
+            ],
+            "aliases": {
+                "Mask": "MaskCn\\Laravel\\Facades\\Mask"
+            }
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse src --level=6",
+        "fix": "php-cs-fixer fix"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}
