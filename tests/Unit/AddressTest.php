@@ -18,49 +18,74 @@ class AddressTest extends TestCase
     /** @test */
     public function it_masks_province_city_address(): void
     {
-        $this->assertSame("广东省深圳市******", Mask::address("广东省深圳市南山区科技园"));
+        $this->assertSame('广东省深圳市******', Mask::address('广东省深圳市南山区科技园'));
     }
 
     /** @test */
     public function it_masks_municipality_address(): void
     {
-        $this->assertSame("北京市******", Mask::address("北京市朝阳区建国路"));
+        $this->assertSame('北京市******', Mask::address('北京市朝阳区建国路'));
     }
 
     /** @test */
     public function it_masks_autonomous_region_address(): void
     {
-        $this->assertSame("广西壮族自治区南宁市*******", Mask::address("广西壮族自治区南宁市青秀区民族大道"));
+        $this->assertSame('广西壮族自治区南宁市*******', Mask::address('广西壮族自治区南宁市青秀区民族大道'));
     }
 
     /** @test */
     public function it_masks_special_admin_region(): void
     {
-        $this->assertSame("香港特别行政区*****", Mask::address("香港特别行政区九龙尖沙咀"));
+        $this->assertSame('香港特别行政区*****', Mask::address('香港特别行政区九龙尖沙咀'));
     }
 
     /** @test */
     public function it_masks_with_city_only(): void
     {
-        $this->assertSame("深圳市******", Mask::address("深圳市南山区科技园"));
+        $this->assertSame('深圳市******', Mask::address('深圳市南山区科技园'));
     }
 
     /** @test */
     public function it_uses_custom_char(): void
     {
         $strategy = new AddressStrategy();
-        $this->assertSame("广东省深圳市######", $strategy->mask("广东省深圳市南山区科技园", ["char" => "#"]));
+        $this->assertSame('广东省深圳市######', $strategy->mask('广东省深圳市南山区科技园', ['char' => '#']));
     }
 
     /** @test */
     public function it_returns_short_address_unchanged(): void
     {
-        $this->assertSame("南山区", Mask::address("南山区"));
+        $this->assertSame('南山区', Mask::address('南山区'));
     }
 
     /** @test */
     public function it_handles_municipality_without_shi(): void
     {
-        $this->assertSame("北京***", Mask::address("北京朝阳区"));
+        $this->assertSame('北京***', Mask::address('北京朝阳区'));
+    }
+
+    /** @test */
+    public function it_returns_empty_string_unchanged(): void
+    {
+        $this->assertSame('', Mask::address(''));
+    }
+
+    /** @test */
+    public function it_handles_english_address(): void
+    {
+        $this->assertSame('123********', Mask::address('123 Main St'));
+    }
+
+    /** @test */
+    public function it_handles_no_province_city(): void
+    {
+        $this->assertSame('南山区', Mask::address('南山区'));
+    }
+
+    /** @test */
+    public function it_handles_multibyte_char(): void
+    {
+        $strategy = new AddressStrategy();
+        $this->assertSame('广东省深圳市※※※※※※', $strategy->mask('广东省深圳市南山区科技园', ['char' => '※']));
     }
 }

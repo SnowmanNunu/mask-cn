@@ -55,4 +55,34 @@ class NameTest extends TestCase
     {
         $this->assertSame('诸葛*明', Mask::name('诸葛孔明'));
     }
+
+    /** @test */
+    public function it_returns_empty_string_unchanged(): void
+    {
+        $this->assertSame('', Mask::name(''));
+    }
+
+    /** @test */
+    public function it_handles_english_name(): void
+    {
+        $this->assertSame('J**n', Mask::name('John'));
+    }
+
+    /** @test */
+    public function it_handles_long_name(): void
+    {
+        $this->assertSame('欧阳*****娜', Mask::name('欧阳娜娜欧阳娜娜'));
+    }
+
+    /** @test */
+    public function it_handles_numeric_name(): void
+    {
+        $this->assertSame('1*3', Mask::name('123'));
+    }
+
+    /** @test */
+    public function it_handles_multibyte_char(): void
+    {
+        $this->assertSame('张※', Mask::name('张三', ['char' => '※']));
+    }
 }

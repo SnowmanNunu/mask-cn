@@ -34,9 +34,14 @@ class IdCardTest extends TestCase
     }
 
     /** @test */
+    public function it_handles_lowercase_x(): void
+    {
+        $this->assertSame('110101********888X', Mask::idCard('11010119900307888x'));
+    }
+
+    /** @test */
     public function id_card_validator_passes_valid_id(): void
     {
-        // 一个标准的合法身份证(纯生成测试用,非真实身份信息)
         $this->assertTrue(IdCardHelper::validate('11010119900307887X') || !IdCardHelper::validate('11010119900307887X'));
     }
 
@@ -44,5 +49,29 @@ class IdCardTest extends TestCase
     public function id_card_validator_rejects_wrong_length(): void
     {
         $this->assertFalse(IdCardHelper::validate('123'));
+    }
+
+    /** @test */
+    public function it_returns_empty_string_unchanged(): void
+    {
+        $this->assertSame('', Mask::idCard(''));
+    }
+
+    /** @test */
+    public function it_handles_17_digit_input(): void
+    {
+        $this->assertSame('11010*******07888', Mask::idCard('11010119900307888'));
+    }
+
+    /** @test */
+    public function it_handles_special_chars(): void
+    {
+        $this->assertSame('110101********888!', Mask::idCard('11010119900307888!'));
+    }
+
+    /** @test */
+    public function it_handles_multibyte_char(): void
+    {
+        $this->assertSame('110101※※※※※※※※8888', Mask::idCard('110101199003078888', ['char' => '※']));
     }
 }

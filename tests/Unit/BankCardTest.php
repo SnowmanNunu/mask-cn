@@ -45,4 +45,35 @@ class BankCardTest extends TestCase
     {
         $this->assertSame('123456', Mask::bankCard('123456'));
     }
+
+    /** @test */
+    public function it_returns_empty_string_unchanged(): void
+    {
+        $this->assertSame('', Mask::bankCard(''));
+    }
+
+    /** @test */
+    public function it_handles_letters_in_card(): void
+    {
+        $this->assertSame('6222****1234', Mask::bankCard('6222****1234'));
+    }
+
+    /** @test */
+    public function it_handles_exactly_11_digits(): void
+    {
+        $this->assertSame('62220212345', Mask::bankCard('62220212345'));
+    }
+
+    /** @test */
+    public function it_handles_exactly_12_digits(): void
+    {
+        $this->assertSame('6222****3456', Mask::bankCard('622202123456'));
+    }
+
+    /** @test */
+    public function it_handles_multibyte_char(): void
+    {
+        $strategy = new BankCardStrategy();
+        $this->assertSame('6222※※※※※※※※7890', $strategy->mask('6222021234567890', ['char' => '※']));
+    }
 }

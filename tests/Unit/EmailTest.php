@@ -31,4 +31,40 @@ class EmailTest extends TestCase
     {
         $this->assertSame('not-an-email', Mask::email('not-an-email'));
     }
+
+    /** @test */
+    public function it_returns_empty_string_unchanged(): void
+    {
+        $this->assertSame('', Mask::email(''));
+    }
+
+    /** @test */
+    public function it_handles_no_at_sign(): void
+    {
+        $this->assertSame('fooexample.com', Mask::email('fooexample.com'));
+    }
+
+    /** @test */
+    public function it_handles_multiple_at_signs(): void
+    {
+        $this->assertSame('f******@baz.com', Mask::email('foo@bar@baz.com'));
+    }
+
+    /** @test */
+    public function it_handles_whitespace_only(): void
+    {
+        $this->assertSame('', Mask::email(''));
+    }
+
+    /** @test */
+    public function it_handles_single_char_local(): void
+    {
+        $this->assertSame('a*@test.com', Mask::email('ab@test.com'));
+    }
+
+    /** @test */
+    public function it_handles_multibyte_char(): void
+    {
+        $this->assertSame('f※※@example.com', Mask::email('foo@example.com', ['char' => '※']));
+    }
 }
