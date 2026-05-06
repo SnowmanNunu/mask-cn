@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn;
 
+use MaskCn\Strategy\StrategyInterface;
+
 /**
  * 中文敏感数据脱敏 - 静态主入口
  *
@@ -38,16 +40,31 @@ class Mask
     }
 
     /**
+     * 注册自定义脱敏策略
+     */
+    public static function register(string $type, StrategyInterface $strategy): Masker
+    {
+        return self::instance()->register($type, $strategy);
+    }
+
+    /**
      * @param array<int,mixed> $arguments
      */
     public static function __callStatic(string $method, array $arguments): string
     {
         $masker = self::instance();
-        if (!method_exists($masker, $method)) {
-            throw new \BadMethodCallException("Method {$method} not found on Masker.");
+        if (method_exists($masker, $method)) {
+            return (string) $masker->{$method}(...$arguments);
         }
 
-        return (string) $masker->{$method}(...$arguments);
+        $strategy = $masker->get($method);
+        if ($strategy !== null) {
+            $input = isset($arguments[0]) && is_string($arguments[0]) ? $arguments[0] : '';
+            $options = isset($arguments[1]) && is_array($arguments[1]) ? $arguments[1] : [];
+            return $strategy->mask($input, $options);
+        }
+
+        throw new \BadMethodCallException("Method {$method} not found on Masker.");
     }
 
     /**

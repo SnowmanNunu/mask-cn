@@ -6,6 +6,7 @@ namespace MaskCn\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use MaskCn\Masker;
+use MaskCn\Strategy\StrategyInterface;
 
 /**
  * @method static string phone(string $phone, array $options = [])
@@ -19,6 +20,7 @@ use MaskCn\Masker;
  * @method static string taiwanId(string $taiwanId, array $options = [])
  * @method static string passport(string $passport, array $options = [])
  * @method static string address(string $address, array $options = [])
+ * @method static Masker register(string $type, StrategyInterface $strategy)
  * @method static array  maskArray(array $data, array $rules = [])
  *
  * @see \MaskCn\Masker

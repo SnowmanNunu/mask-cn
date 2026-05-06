@@ -57,6 +57,35 @@ Mask::address("北京市朝阳区建国路");               // "北京市******"
 Mask::address("广西壮族自治区南宁市青秀区民族大道"); // "广西壮族自治区南宁市*******"
 ```
 
+### 自定义脱敏规则
+
+实现 `StrategyInterface` 并注册即可使用:
+
+```php
+use MaskCn\Mask;
+use MaskCn\Strategy\StrategyInterface;
+
+class AsteriskStrategy implements StrategyInterface
+{
+    public function mask(string $input, array $options = []): string
+    {
+        $char = isset($options["char"]) ? (string) $options["char"] : "*";
+        return str_repeat($char, strlen($input));
+    }
+}
+
+Mask::register("secret", new AsteriskStrategy());
+Mask::secret("password123");           // "***********"
+Mask::secret("password123", ["char" => "#"]); // "###########"
+```
+
+注册后的策略同样支持 `Mask::array()` 批量脱敏:
+
+```php
+Mask::array(["token" => "abc123"], ["token" => "secret"]);
+// ["token" => "******"]
+```
+
 ### 数组批量脱敏
 
 ```php
@@ -112,6 +141,7 @@ Mask::idCard("110101199003078888", ["char" => "#"]); // "110101########8888"
 use MaskCn\Laravel\Facades\Mask;
 
 Mask::phone($user->phone);
+Mask::register("secret", new AsteriskStrategy());
 ```
 
 也可作为验证规则使用(可选):
@@ -141,7 +171,8 @@ composer fix       # 代码风格
 - [x] v0.2.x: 港澳通行证/居住证、台湾身份证/居住证、护照
 - [x] v0.2.x: 中文地址脱敏
 - [x] v0.2.x: Auto 模式支持 char 选项和 JSON 输入
-- [ ] v1.x: 配置化(自定义掩码字符、保留位数)
+- [x] v0.3.x: 自定义脱敏规则注册
+- [ ] v1.x: 配置化(自定义默认掩码字符、保留位数)
 - [ ] v2.x: PSR-3 Logger 集成(自动屏蔽日志中的敏感字段)
 
 ## License
