@@ -124,6 +124,20 @@ Mask::auto($json);
 // '{"user":{"phone":"138****5678","idCard":"110101********8888"},"email":"f**@bar.com"}'
 ```
 
+Auto 内置识别类型:
+
+| 类型 | 示例 | 说明 |
+|------|------|------|
+| `idCard` | `110101199003078888` | 18位身份证 |
+| `phone` | `13812345678` | 大陆手机号 |
+| `email` | `foo@bar.com` | 邮箱 |
+| `plate` | `京A12345` | 中国车牌(含新能源) |
+| `taiwanId` | `A123456789` | 台湾身份证/居住证 |
+| `hkMoPass` | `H12345678` | 港澳回乡证 |
+| `passport` | `E12345678` | 护照 |
+| `uscc` | `91110105MA00XXXXXX` | 统一社会信用代码(18位) |
+| `bankCard` | `6222021234567890123` | 银行卡(16-19位) |
+
 ### 全局配置
 
 通过 `Config` 类可统一设置默认掩码字符,无需在每个调用处重复传入:
@@ -195,10 +209,16 @@ Mask::register("secret", new AsteriskStrategy());
 也可作为验证规则使用(可选):
 
 ```php
+use MaskCn\Laravel\Rules\MaskedField;
+
 $request->validate([
     "phone_masked" => ["string", new MaskedField("phone")],
+    "plate_masked" => ["string", new MaskedField("plate")],
+    "passport_masked" => ["string", new MaskedField("passport")],
 ]);
 ```
+
+支持的验证类型: `phone`、`idCard`、`email`、`bankCard`、`name`、`plate`、`uscc`、`hkMoPass`、`taiwanId`、`passport`、`address`。
 
 ## 测试
 
@@ -217,6 +237,7 @@ composer fix       # 代码风格
 - [x] v0.2.x: Auto 模式支持 char 选项和 JSON 输入
 - [x] v0.3.x: 自定义脱敏规则注册
 - [x] v1.0.0: 全局配置(Config) + PSR-3 Logger 集成
+- [x] v1.1.0: MaskedField 验证规则扩展 + Auto 模式新增证件/车牌/USCC 识别
 
 ## License
 
