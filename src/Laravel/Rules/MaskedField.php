@@ -36,6 +36,22 @@ class MaskedField implements Rule
                 return (bool) preg_match('/^\d{6}\*{8}\d{4}$/', $value);
             case 'email':
                 return strpos($value, '*') !== false && strpos($value, '@') !== false;
+            case 'bankCard':
+                return (bool) preg_match('/^\d{4}( \*{4,}|\*+)\d{4}$/', $value);
+            case 'name':
+                return mb_strlen($value) >= 2 && preg_match('/[\x{4e00}-\x{9fa5}]/u', $value) && strpos($value, '*') !== false;
+            case 'plate':
+                return (bool) preg_match('/^[\x{4e00}-\x{9fa5}][A-Z]\*+[A-Z0-9]{2,}$/u', $value);
+            case 'uscc':
+                return (bool) preg_match('/^[A-Z0-9]{3,8}\*+[A-Z0-9]{2,3}$/i', $value);
+            case 'hkMoPass':
+                return (bool) preg_match('/^[HM]\*+\d{4}$/i', $value) || preg_match('/^\d{6}\*+\d{4}[Xx\d]$/', $value);
+            case 'taiwanId':
+                return (bool) preg_match('/^[A-Z]\d\*+\d{3}$/i', $value) || preg_match('/^\d{6}\*+\d{4}[Xx\d]$/', $value);
+            case 'passport':
+                return (bool) preg_match('/^[A-Z]\*+\d{4,}$/i', $value);
+            case 'address':
+                return preg_match('/[\x{4e00}-\x{9fa5}]/u', $value) && strpos($value, '*') !== false;
             default:
                 return strpos($value, '*') !== false;
         }

@@ -10,7 +10,7 @@ class Auto
      * 智能识别并脱敏敏感数据
      *
      * 支持纯文本和 JSON 字符串:
-     * - 纯文本: 内置识别身份证、手机号、邮箱、银行卡
+     * - 纯文本: 内置识别身份证、手机号、邮箱、银行卡、车牌、护照、回乡证、台胞证、统一社会信用代码
      * - JSON: 递归遍历所有字符串值进行识别脱敏
      *
      * @param array<string, mixed> $options ["char" => "*", "types" => []]
@@ -72,7 +72,8 @@ class Auto
     }
 
     /**
-     * 顺序很重要:先识别 idCard (含校验位 X),再 phone,再 email,最后 bankCard
+     * 顺序很重要:先识别 idCard (含校验位 X),再 phone,再 email,
+     * 再 plate / taiwanId / hkMoPass / passport / uscc,最后 bankCard
      * 因为 bankCard 16-19 位与 idCard 18 位有重叠,先标记的不会被二次匹配
      *
      * @return array<string, array{pattern: string, masker: callable}>
@@ -96,6 +97,36 @@ class Auto
                 "pattern" => "/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/",
                 "masker" => static function (array $m, string $char) use ($masker): string {
                     return $masker->email($m[0], ["char" => $char]);
+                },
+            ],
+            "plate" => [
+                "pattern" => "/(?<![A-Za-z0-9])[京津沪渝冀晋辽吉黑苏浙皖闽赣鲁豫鄂湘粤桂琼川贵云陕甘青宁新藏台港澳蒙][A-Z][A-Z0-9]{5,6}(?![A-Za-z0-9])/u",
+                "masker" => static function (array $m, string $char) use ($masker): string {
+                    return $masker->plate($m[0], ["char" => $char]);
+                },
+            ],
+            "taiwanId" => [
+                "pattern" => "/(?<![A-Za-z0-9])[A-Z]\d{9}(?![A-Za-z0-9])/i",
+                "masker" => static function (array $m, string $char) use ($masker): string {
+                    return $masker->taiwanId($m[0], ["char" => $char]);
+                },
+            ],
+            "hkMoPass" => [
+                "pattern" => "/(?<![A-Za-z0-9])[HM]\d{8}(?![A-Za-z0-9])/i",
+                "masker" => static function (array $m, string $char) use ($masker): string {
+                    return $masker->hkMoPass($m[0], ["char" => $char]);
+                },
+            ],
+            "passport" => [
+                "pattern" => "/(?<![A-Za-z0-9])[A-Z]\d{7,9}(?![A-Za-z0-9])/i",
+                "masker" => static function (array $m, string $char) use ($masker): string {
+                    return $masker->passport($m[0], ["char" => $char]);
+                },
+            ],
+            "uscc" => [
+                "pattern" => "/(?<![A-Za-z0-9])[0-9A-Z]{18}(?![A-Za-z0-9])/i",
+                "masker" => static function (array $m, string $char) use ($masker): string {
+                    return $masker->uscc($m[0], ["char" => $char]);
                 },
             ],
             "bankCard" => [
