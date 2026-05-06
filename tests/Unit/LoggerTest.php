@@ -17,7 +17,7 @@ class TestLogger implements LoggerInterface
     /** @var array<array{level: string, message: string|\Stringable, context: array}> */
     public $records = [];
 
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         $this->records[] = ['level' => $level, 'message' => $message, 'context' => $context];
     }

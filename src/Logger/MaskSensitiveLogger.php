@@ -33,10 +33,10 @@ class MaskSensitiveLogger implements LoggerInterface
 
     /**
      * @param mixed $level
-     * @param string|\Stringable $message
+     * @param $message
      * @param array<string, mixed> $context
      */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         if (is_string($message)) {
             $message = $this->auto->mask($message);
