@@ -124,6 +124,54 @@ Mask::auto($json);
 // '{"user":{"phone":"138****5678","idCard":"110101********8888"},"email":"f**@bar.com"}'
 ```
 
+### 全局配置
+
+通过 `Config` 类可统一设置默认掩码字符,无需在每个调用处重复传入:
+
+```php
+use MaskCn\Config;
+use MaskCn\Mask;
+
+Config::set(['char' => '#']);
+
+Mask::phone('13812345678');        // "138####5678"
+Mask::idCard('110101199003078888'); // "110101########8888"
+Mask::auto('电话 13812345678');     // "电话 138####5678"
+```
+
+优先级: 方法级 `options['char']` > `Config::get('char')` > 默认 `*`。
+
+```php
+Config::set(['char' => '#']);
+Mask::phone('13812345678', ['char' => '*']); // "138****5678" ← options 优先
+```
+
+```php
+Config::reset(); // 清空配置
+```
+
+### PSR-3 Logger 集成
+
+自动在日志输出前脱敏敏感字段,无需改动业务代码:
+
+```php
+use MaskCn\Logger\MaskSensitiveLogger;
+use Psr\Log\LoggerInterface;
+
+$maskLogger = new MaskSensitiveLogger($originalLogger);
+$maskLogger->info('用户 phone: 13812345678, 身份证: 110101199003078888');
+// 实际记录: "用户 phone: 138****5678, 身份证: 110101********8888"
+```
+
+也可在任意日志框架中使用静态处理器:
+
+```php
+use MaskCn\Logger\MaskProcessor;
+
+$message = MaskProcessor::process('用户 phone: 13812345678');
+// "用户 phone: 138****5678"
+```
+
 ### 自定义掩码字符
 
 所有方法均支持 `char` 选项:
@@ -172,8 +220,7 @@ composer fix       # 代码风格
 - [x] v0.2.x: 中文地址脱敏
 - [x] v0.2.x: Auto 模式支持 char 选项和 JSON 输入
 - [x] v0.3.x: 自定义脱敏规则注册
-- [ ] v1.x: 配置化(自定义默认掩码字符、保留位数)
-- [ ] v2.x: PSR-3 Logger 集成(自动屏蔽日志中的敏感字段)
+- [x] v1.0.0: 全局配置(Config) + PSR-3 Logger 集成
 
 ## License
 

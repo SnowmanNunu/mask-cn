@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 class TaiwanIdStrategy implements StrategyInterface
 {
     /**
@@ -16,7 +18,7 @@ class TaiwanIdStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options["char"]) ? (string) $options["char"] : "*";
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $input = strtoupper(trim($input));
 
         // 台湾身份证: 1 位大写字母 + 9 位数字

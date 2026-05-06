@@ -1,7 +1,16 @@
 {
     "name": "snowmannunu/mask-cn",
     "description": "中文本土场景敏感数据脱敏库 - 内置中国手机号/身份证/银行卡/复姓姓名/车牌等规则,开箱即用,Laravel 友好",
-    "keywords": ["mask", "脱敏", "data-masking", "china", "中文", "身份证", "手机号", "laravel"],
+    "keywords": [
+        "mask",
+        "脱敏",
+        "data-masking",
+        "china",
+        "中文",
+        "身份证",
+        "手机号",
+        "laravel"
+    ],
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/SnowmanNunu/mask-cn",
@@ -13,7 +22,8 @@
     ],
     "require": {
         "php": "^7.3 || ^8.0",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "psr/log": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5 || ^10.0",

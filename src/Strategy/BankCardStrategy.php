@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 class BankCardStrategy implements StrategyInterface
 {
     /**
@@ -18,7 +20,7 @@ class BankCardStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options['char']) ? (string) $options['char'] : '*';
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $space = isset($options['space']) ? (bool) $options['space'] : false;
 
         $input = preg_replace('/\s+/', '', trim($input));

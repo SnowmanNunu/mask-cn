@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 class PhoneStrategy implements StrategyInterface
 {
     /**
@@ -13,7 +15,7 @@ class PhoneStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options['char']) ? (string) $options['char'] : '*';
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $input = trim($input);
 
         // 标准 11 位手机号(1开头, 第二位 3-9)

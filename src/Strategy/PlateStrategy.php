@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 class PlateStrategy implements StrategyInterface
 {
     /**
@@ -18,7 +20,7 @@ class PlateStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options['char']) ? (string) $options['char'] : '*';
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $input = trim($input);
         $len = mb_strlen($input);
 

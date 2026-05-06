@@ -17,7 +17,7 @@ class Auto
      */
     public function mask(string $text, array $options = []): string
     {
-        $char = isset($options["char"]) ? (string) $options["char"] : "*";
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $types = isset($options["types"]) ? (array) $options["types"] : [];
 
         // 检测是否是 JSON

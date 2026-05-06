@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 use MaskCn\Helper\ChineseName;
 
 class NameStrategy implements StrategyInterface
@@ -24,7 +26,7 @@ class NameStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options['char']) ? (string) $options['char'] : '*';
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $input = trim($input);
         $len = mb_strlen($input);
 

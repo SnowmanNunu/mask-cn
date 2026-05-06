@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MaskCn\Strategy;
 
+use MaskCn\Config;
+
 class AddressStrategy implements StrategyInterface
 {
     /** @var string[] */
@@ -20,7 +22,7 @@ class AddressStrategy implements StrategyInterface
      */
     public function mask(string $input, array $options = []): string
     {
-        $char = isset($options["char"]) ? (string) $options["char"] : "*";
+        $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $input = trim($input);
 
         // 直辖市: 保留到 "市" 为止
