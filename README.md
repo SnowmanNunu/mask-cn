@@ -27,8 +27,8 @@ Mask::phone("13812345678");           // "138****5678"
 Mask::idCard("110101199003078888");   // "110101********8888"
 Mask::bankCard("6222021234567890123"); // "6222 *********** 0123"
 Mask::name("张三");                    // "张*"
-Mask::name("欧阳娜娜");                // "欧*娜娜"     ← 复姓识别
-Mask::name("诸葛孔明");                // "诸*孔明"     ← 复姓识别
+Mask::name("欧阳娜娜");                // "欧阳*娜"     ← 复姓识别
+Mask::name("诸葛孔明");                // "诸葛*明"     ← 复姓识别
 Mask::email("foo@example.com");        // "f**@example.com"
 Mask::plate("京A12345");              // "京A***45"
 ```
@@ -199,10 +199,6 @@ $request->validate([
     "phone_masked" => ["string", new MaskedField("phone")],
 ]);
 ```
-
-## 设计文档
-
-详见 [docs/DESIGN.md](docs/DESIGN.md)。
 
 ## 测试
 
