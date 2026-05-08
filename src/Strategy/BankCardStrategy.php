@@ -16,12 +16,14 @@ class BankCardStrategy implements StrategyInterface
      *  - 开启 space 选项后,按 4 位分组: "6222 **** **** ***0 123"
      *    (注意:19 位卡号末尾仅 3 字符,符合 UnionPay 4-4-4-4-3 显示惯例)
      *
-     * @param array<string, mixed> $options ['char' => '*', 'space' => false]
+     * @param array<string, mixed> $options ['char' => '*', 'space' => false, 'front' => 4, 'back' => 4]
      */
     public function mask(string $input, array $options = []): string
     {
         $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
         $space = isset($options['space']) ? (bool) $options['space'] : false;
+        $front = isset($options["front"]) ? (int) $options["front"] : 4;
+        $back = isset($options["back"]) ? (int) $options["back"] : 4;
 
         $input = preg_replace('/\s+/', '', trim($input));
         $len = strlen($input);
@@ -30,7 +32,7 @@ class BankCardStrategy implements StrategyInterface
             return $input;
         }
 
-        $masked = substr($input, 0, 4) . str_repeat($char, $len - 8) . substr($input, -4);
+        $masked = substr($input, 0, $front) . str_repeat($char, max(0, $len - $front - $back)) . substr($input, -$back);
 
         if (!$space) {
             return $masked;

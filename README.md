@@ -238,6 +238,7 @@ composer fix       # 代码风格
 - [x] v0.3.x: 自定义脱敏规则注册
 - [x] v1.0.0: 全局配置(Config) + PSR-3 Logger 集成
 - [x] v1.1.0: MaskedField 验证规则扩展 + Auto 模式新增证件/车牌/USCC 识别
+- [x] v1.2.0: Config 支持按策略配置保留位数 + MaskedField 支持自定义掩码字符校验
 
 ## License
 

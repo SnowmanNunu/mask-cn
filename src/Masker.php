@@ -48,59 +48,74 @@ class Masker
         return $this->strategies[$type] ?? null;
     }
 
+    /**
+     * 将 Config 中对应策略的默认配置合并到 options( options 优先级更高 )
+     *
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
+     */
+    private function mergeOptions(string $type, array $options): array
+    {
+        $config = Config::get($type, []);
+        if (is_array($config)) {
+            return array_merge($config, $options);
+        }
+        return $options;
+    }
+
     public function phone(string $input, array $options = []): string
     {
-        return $this->strategies["phone"]->mask($input, $options);
+        return $this->strategies["phone"]->mask($input, $this->mergeOptions('phone', $options));
     }
 
     public function idCard(string $input, array $options = []): string
     {
-        return $this->strategies["idCard"]->mask($input, $options);
+        return $this->strategies["idCard"]->mask($input, $this->mergeOptions('idCard', $options));
     }
 
     public function bankCard(string $input, array $options = []): string
     {
-        return $this->strategies["bankCard"]->mask($input, $options);
+        return $this->strategies["bankCard"]->mask($input, $this->mergeOptions('bankCard', $options));
     }
 
     public function name(string $input, array $options = []): string
     {
-        return $this->strategies["name"]->mask($input, $options);
+        return $this->strategies["name"]->mask($input, $this->mergeOptions('name', $options));
     }
 
     public function email(string $input, array $options = []): string
     {
-        return $this->strategies["email"]->mask($input, $options);
+        return $this->strategies["email"]->mask($input, $this->mergeOptions('email', $options));
     }
 
     public function plate(string $input, array $options = []): string
     {
-        return $this->strategies["plate"]->mask($input, $options);
+        return $this->strategies["plate"]->mask($input, $this->mergeOptions('plate', $options));
     }
 
     public function uscc(string $input, array $options = []): string
     {
-        return $this->strategies["uscc"]->mask($input, $options);
+        return $this->strategies["uscc"]->mask($input, $this->mergeOptions('uscc', $options));
     }
 
     public function hkMoPass(string $input, array $options = []): string
     {
-        return $this->strategies["hkMoPass"]->mask($input, $options);
+        return $this->strategies["hkMoPass"]->mask($input, $this->mergeOptions('hkMoPass', $options));
     }
 
     public function taiwanId(string $input, array $options = []): string
     {
-        return $this->strategies["taiwanId"]->mask($input, $options);
+        return $this->strategies["taiwanId"]->mask($input, $this->mergeOptions('taiwanId', $options));
     }
 
     public function passport(string $input, array $options = []): string
     {
-        return $this->strategies["passport"]->mask($input, $options);
+        return $this->strategies["passport"]->mask($input, $this->mergeOptions('passport', $options));
     }
 
     public function address(string $input, array $options = []): string
     {
-        return $this->strategies["address"]->mask($input, $options);
+        return $this->strategies["address"]->mask($input, $this->mergeOptions('address', $options));
     }
 
     /**
@@ -115,7 +130,7 @@ class Masker
         $result = [];
         foreach ($data as $key => $value) {
             if (isset($rules[$key]) && is_string($value) && isset($this->strategies[$rules[$key]])) {
-                $result[$key] = $this->strategies[$rules[$key]]->mask($value);
+                $result[$key] = $this->strategies[$rules[$key]]->mask($value, $this->mergeOptions($rules[$key], []));
             } else {
                 $result[$key] = $value;
             }

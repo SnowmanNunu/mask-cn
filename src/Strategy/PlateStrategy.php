@@ -16,21 +16,23 @@ class PlateStrategy implements StrategyInterface
      *
      * 规则:保留首 2 位 (省份简称 + 字母),保留末 2 位,中间脱敏
      *
-     * @param array<string, mixed> $options ['char' => '*']
+     * @param array<string, mixed> $options ['char' => '*', 'front' => 2, 'back' => 2]
      */
     public function mask(string $input, array $options = []): string
     {
         $char = isset($options["char"]) ? (string) $options["char"] : Config::get("char", "*");
+        $front = isset($options["front"]) ? (int) $options["front"] : 2;
+        $back = isset($options["back"]) ? (int) $options["back"] : 2;
         $input = trim($input);
         $len = mb_strlen($input);
 
-        if ($len < 5) {
+        if ($len < $front + $back + 1) {
             return $input;
         }
 
-        $prefix = mb_substr($input, 0, 2);
-        $tail = mb_substr($input, -2);
-        $maskCount = $len - 4;
+        $prefix = mb_substr($input, 0, $front);
+        $tail = mb_substr($input, -$back);
+        $maskCount = max(0, $len - $front - $back);
         return $prefix . str_repeat($char, $maskCount) . $tail;
     }
 }
